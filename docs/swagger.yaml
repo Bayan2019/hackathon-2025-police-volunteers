@@ -1,0 +1,158 @@
+basePath: /
+definitions:
+  views.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  views.ResponseMessage:
+    properties:
+      message:
+        type: string
+    type: object
+  views.SignInRequest:
+    properties:
+      password:
+        type: string
+      phone:
+        type: string
+    type: object
+  views.TokensResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+host: hackathon-2025-zfmi.onrender.com
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server POLICE.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: VOLUNTEERS API
+  version: "1.0"
+paths:
+  /:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.ResponseMessage'
+        "500":
+          description: Invalid file
+          schema:
+            $ref: '#/definitions/views.ErrorResponse'
+      summary: Saying hello
+      tags:
+      - Tests
+  /v1/auth/refresh:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Bearer RefreshToken
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.TokensResponse'
+        "400":
+          description: Couldn't find token
+          schema:
+            $ref: '#/definitions/views.ErrorResponse'
+        "404":
+          description: Couldn't find user
+          schema:
+            $ref: '#/definitions/views.ErrorResponse'
+        "500":
+          description: Couldn't create tokens
+          schema:
+            $ref: '#/definitions/views.ErrorResponse'
+      summary: Refresh
+      tags:
+      - Auth
+  /v1/auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Authentication
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/views.SignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.TokensResponse'
+        "400":
+          description: Invalid Data
+          schema:
+            $ref: '#/definitions/views.ErrorResponse'
+        "401":
+          description: Incorrect email or password
+          schema:
+            $ref: '#/definitions/views.ErrorResponse'
+        "404":
+          description: Email not found
+          schema:
+            $ref: '#/definitions/views.ErrorResponse'
+        "500":
+          description: Couldn't create tokens
+          schema:
+            $ref: '#/definitions/views.ErrorResponse'
+      summary: Sign In
+      tags:
+      - Auth
+  /v1/auth/sign-out:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Bearer AccessToken
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Couldn't find token
+          schema:
+            $ref: '#/definitions/views.ErrorResponse'
+        "500":
+          description: Couldn't revoke session
+          schema:
+            $ref: '#/definitions/views.ErrorResponse'
+      summary: Sign Out
+      tags:
+      - Auth
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
