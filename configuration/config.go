@@ -15,7 +15,6 @@ var ApiCfg *ApiConfiguration
 type ApiConfiguration struct {
 	Conn      *sql.DB
 	DB        *database.Queries
-	Dir       string
 	JwtSecret string
 }
 
