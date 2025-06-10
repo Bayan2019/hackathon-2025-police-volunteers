@@ -3,10 +3,18 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
+	"time"
 
 	"github.com/Bayan2019/hackathon-2025-police-volunteers/configuration"
+	"github.com/Bayan2019/hackathon-2025-police-volunteers/controllers"
+	_ "github.com/Bayan2019/hackathon-2025-police-volunteers/docs"
+
+	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
+	httpSwagger "github.com/swaggo/http-swagger/v2"
 )
 
 // @title VOLUNTEERS API
@@ -62,5 +70,42 @@ func main() {
 			JwtSecret: jwtSecret,
 		}
 	}
+
+	router := chi.NewRouter()
+
+	router.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"https://*", "http://*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"*"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300,
+	}))
+
+	router.Get("/", controllers.HelloHandler)
+
+	router.Get("/swagger/*",
+		httpSwagger.Handler(httpSwagger.URL("https://hackathon-2025-zfmi.onrender.com/swagger/doc.json")))
+
+	v1Router := chi.NewRouter()
+
+	if configuration.ApiCfg.DB != nil {
+		authHandlers := controllers.NewAuthHandlers(configuration.ApiCfg.DB, configuration.ApiCfg.JwtSecret)
+
+		v1Router.Post("/auth/sign-in", authHandlers.Login)
+		v1Router.Post("/auth/refresh", authHandlers.Refresh)
+		v1Router.Post("/auth/sign-out", authHandlers.Logout)
+	}
+
+	router.Mount("/v1", v1Router)
+
+	srv := &http.Server{
+		Addr:              ":" + port,
+		Handler:           router,
+		ReadHeaderTimeout: time.Second * 10,
+	}
+
+	log.Printf("Serving on: http://localhost:%s\n", port)
+	log.Fatal(srv.ListenAndServe())
 
 }

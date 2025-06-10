@@ -256,8 +256,8 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "This is a sample server POLICE.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
-	LeftDelim:        "{{",
-	RightDelim:       "}}",
+	// LeftDelim:        "{{",
+	// RightDelim:       "}}",
 }
 
 func init() {
