@@ -24,7 +24,7 @@ definitions:
       refresh_token:
         type: string
     type: object
-host: hackathon-2025-zfmi.onrender.com
+host: hackathon-2025-police-volunteers.onrender.com
 info:
   contact:
     email: support@swagger.io

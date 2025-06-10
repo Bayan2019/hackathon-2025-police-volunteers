@@ -249,7 +249,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "hackathon-2025-zfmi.onrender.com",
+	Host:             "hackathon-2025-police-volunteers.onrender.com",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "VOLUNTEERS API",
