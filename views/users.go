@@ -2,6 +2,15 @@ package views
 
 import "github.com/Bayan2019/hackathon-2025-police-volunteers/repositories/database"
 
+type CreateUserRequest struct {
+	Name            string `json:"name"`
+	Iin             string `json:"iin"`
+	Phone           string `json:"phone"`
+	DateOfBirth     string `json:"date_of_birth"`
+	CurrentLocation string `json:"current_location"`
+	Password        string `json:"password"`
+}
+
 type UpdateProfileRequest struct {
 	// Id          int64     `json:"id"`
 	Name string `json:"name"`
