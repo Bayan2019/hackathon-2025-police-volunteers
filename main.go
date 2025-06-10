@@ -29,7 +29,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host hackathon-2025-zfmi.onrender.com
+// @host hackathon-2025-police-volunteers.onrender.com
 // @BasePath /
 
 // @securityDefinitions.apikey Bearer
@@ -85,7 +85,7 @@ func main() {
 	router.Get("/", controllers.HelloHandler)
 
 	router.Get("/swagger/*",
-		httpSwagger.Handler(httpSwagger.URL("https://hackathon-2025-zfmi.onrender.com/swagger/doc.json")))
+		httpSwagger.Handler(httpSwagger.URL("https://hackathon-2025-police-volunteers.onrender.com/swagger/doc.json")))
 
 	v1Router := chi.NewRouter()
 
